@@ -7,8 +7,8 @@ A .NET 8 console application for a courier service that calculates delivery cost
 | Project | Description |
 |---|---|
 | **CourierService.Core** | Shared models and services — cost calculation, offer/coupon logic |
-| **CourierService.CostEstimation** | Console app that outputs per-package discount and total cost |
-| **CourierService.DeliveryEstimation** | Console app that additionally estimates delivery time using  vehicle details  |
+| **CostCalculation** | Console app that outputs per-package discount and total cost |
+| **DeliveryEstimation** | Console app that additionally estimates delivery time using  vehicle details  |
 | **CourierService.Tests** | xUnit tests for cost calculation, delivery time and offers |
 
 ## Cost Formula
@@ -32,7 +32,7 @@ Discount is applied as a percentage of the delivery cost when a valid offer code
 ### Cost Estimation
 
 ```bash
-cd src/CourierService.CostEstimation
+cd src/CostCalculation
 dotnet run
 ```
 
@@ -59,7 +59,7 @@ Each line: `<package_id> <discount> <total_cost>`
 ### Delivery Time Estimation
 
 ```bash
-cd src/CourierService.DeliveryEstimation
+cd src/DeliveryEstimation
 dotnet run
 ```
 

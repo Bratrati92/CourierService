@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CourierService.Tests
 {
-    public  class DeliveryTimeCalculatorTests
+    public class DeliveryTimeCalculatorTests
     {
         private readonly DeliveryTimeCalculator _calculator;
 
@@ -70,6 +70,76 @@ namespace CourierService.Tests
             Assert.Equal(0.50, resultMap["PKG3"].deliveryEstimationTime);
             Assert.Equal(1.50, resultMap["PKG4"].deliveryEstimationTime);
             Assert.Equal(1.20, resultMap["PKG5"].deliveryEstimationTime);
+        }
+
+        [Fact]
+
+        public void CalculateDeliveryTimes_WithSamePackageCount()
+        {
+            List<Package> packages = new List<Package>()
+            {
+                new Package { PackageId = "P1", Weight = 50, Distance = 30 },
+                new Package { PackageId = "P2", Weight = 15, Distance = 30 },
+                new Package { PackageId = "P3", Weight = 10, Distance = 15 },
+                new Package { PackageId = "P4", Weight = 25, Distance = 60 },
+                new Package { PackageId = "P5", Weight = 5, Distance = 15 },
+                new Package { PackageId = "P6", Weight = 30, Distance = 30 },
+            };
+
+            var vechicleDetils = new VehicleDetils { NoOfVehicles = 2, MaxSpeed = 60, MaxCarryWeight = 50 };
+
+            List<DeliveryEstimationResult> deliveryTimeEstimationResult = packages.Select( p => new DeliveryEstimationResult
+            {
+                PackageId = p.PackageId,
+                Discount = 0,
+                TotalCost = 0
+            }).ToList();
+
+            var result = _calculator.CalculateDeliveryTimes(deliveryTimeEstimationResult, packages, vechicleDetils);
+
+            var deliveryTimeEstimationResultMap = deliveryTimeEstimationResult.ToDictionary(p => p.PackageId);
+
+            Assert.Equal(1.50, deliveryTimeEstimationResultMap["P1"].deliveryEstimationTime);   
+            Assert.Equal(0.50, deliveryTimeEstimationResultMap["P2"].deliveryEstimationTime);
+            Assert.Equal(0.25, deliveryTimeEstimationResultMap["P3"].deliveryEstimationTime);
+            Assert.Equal(1.00, deliveryTimeEstimationResultMap["P4"].deliveryEstimationTime);
+            Assert.Equal(0.25, deliveryTimeEstimationResultMap["P5"].deliveryEstimationTime);
+            Assert.Equal(0.50, deliveryTimeEstimationResultMap["P6"].deliveryEstimationTime);
+
+        }
+
+        [Fact]
+
+        public void CalculateDeliveryTimes_WithSamePackageCountAndWeight()
+        {
+            List<Package> packages = new List<Package>()
+            {
+                new Package { PackageId = "P1", Weight = 20, Distance = 30 },
+                new Package { PackageId = "P2", Weight = 20, Distance = 60 },
+                new Package { PackageId = "P3", Weight = 40, Distance = 15 },
+                new Package { PackageId = "P4", Weight = 30, Distance = 60 },
+                new Package { PackageId = "P5", Weight = 40, Distance = 30 },
+            };
+
+            var vechicleDetils = new VehicleDetils { NoOfVehicles = 2, MaxSpeed = 60, MaxCarryWeight = 50 };
+
+            List<DeliveryEstimationResult> deliveryTimeEstimationResult = packages.Select(p => new DeliveryEstimationResult
+            {
+                PackageId = p.PackageId,
+                Discount = 0,
+                TotalCost = 0
+            }).ToList();
+
+            var result = _calculator.CalculateDeliveryTimes(deliveryTimeEstimationResult, packages, vechicleDetils);
+
+            var deliveryTimeEstimationResultMap = deliveryTimeEstimationResult.ToDictionary(p => p.PackageId);
+
+            Assert.Equal(0.50, deliveryTimeEstimationResultMap["P1"].deliveryEstimationTime);
+            Assert.Equal(2.50, deliveryTimeEstimationResultMap["P2"].deliveryEstimationTime);
+            Assert.Equal(0.25, deliveryTimeEstimationResultMap["P3"].deliveryEstimationTime);
+            Assert.Equal(1.00, deliveryTimeEstimationResultMap["P4"].deliveryEstimationTime);
+            Assert.Equal(1.00, deliveryTimeEstimationResultMap["P5"].deliveryEstimationTime);
+
         }
     }
 }

@@ -59,58 +59,77 @@ namespace DeliveryEstimation.Service
 
             return results;
         }
-
+                
         private static List<Package> FindBestShipment(List<Package> candidates, double maxWeight)
         {
             var bestSubset = new List<Package>();
-            double bestWeight = 0;
 
             int n = candidates.Count;
-            for (int mask = 1; mask < (1 << n); mask++)
+            if (n == 0) return bestSubset;
+
+            int[] weight = candidates.Select(w => (int)(w.Weight * 100)).ToArray();
+            double[] distance = candidates.Select(p => p.Distance).ToArray();
+            int capacity = (int)(maxWeight * 100);
+
+            int[,] dp = new int[n + 1, capacity + 1];        // max weight
+            int[,] cnt = new int[n + 1, capacity + 1];       // package count
+            double[,] mxd = new double[n + 1, capacity + 1]; // max distance
+            bool[,] took = new bool[n + 1, capacity + 1];    // was item taken?
+
+            for (int idx = 1; idx <= n; idx++)
             {
-                var subset = new List<Package>();
-                double totalWeight = 0;
-
-                for (int i = 0; i < n; i++)
+                for (int w = 0; w <= capacity; w++)
                 {
-                    if ((mask & (1 << i)) != 0)
+                    // Default: skip item
+                    dp[idx, w] = dp[idx - 1, w];
+                    cnt[idx, w] = cnt[idx - 1, w];
+                    mxd[idx, w] = mxd[idx - 1, w];
+
+                    if (weight[idx - 1] <= w)
                     {
-                        subset.Add(candidates[i]);
-                        totalWeight += candidates[i].Weight;
+                        int pw = w - weight[idx - 1];
+                        int takeWt = dp[idx - 1, pw] + weight[idx - 1];
+                        int takeCnt = cnt[idx - 1, pw] + 1;
+                        double takeDist = Math.Max(mxd[idx - 1, pw], distance[idx - 1]);
+
+                        if (IsBetter(takeCnt, takeWt, takeDist,
+                                     cnt[idx, w], dp[idx, w], mxd[idx, w]))
+                        {
+                            dp[idx, w] = takeWt;
+                            cnt[idx, w] = takeCnt;
+                            mxd[idx, w] = takeDist;
+                            took[idx, w] = true;
+                        }
                     }
                 }
+            }
 
-                if (totalWeight > maxWeight) continue;
-
-                bool isBetter = false;
-                if (totalWeight > bestWeight)
+            // Backtrack using the took table
+            for (int i = n, j = capacity; i > 0; i--)
+            {
+                if (took[i, j])
                 {
-                    isBetter = true;
-                }
-                else if (Math.Abs(totalWeight - bestWeight) < 0.001)
-                {
-                    if (subset.Count < bestSubset.Count)
-                    {
-                        isBetter = true;
-                    }
-                    else if (subset.Count == bestSubset.Count)
-                    {
-                        double maxDist = subset.Max(p => p.Distance);
-                        double bestMaxDist = bestSubset.Max(p => p.Distance);
-                        if (maxDist < bestMaxDist)
-                            isBetter = true;
-                    }
-                }
-
-                if (isBetter)
-                {
-                    bestSubset = subset;
-                    bestWeight = totalWeight;
+                    bestSubset.Add(candidates[i - 1]);
+                    j -= weight[i - 1];
                 }
             }
 
             return bestSubset;
         }
+
+        // Tie-breaking: more packages → higher weight → shorter max distance
+        private static bool IsBetter(int countA, int weightA, double distA,
+                                      int countB, int weightB, double distB)
+        {
+            if (countA > countB) return true;
+            if (countA < countB) return false;
+            if (weightA > weightB) return true;
+            if (weightA < weightB) return false;
+            return distA < distB;
+        }
+
+       
+
 
     }
 }

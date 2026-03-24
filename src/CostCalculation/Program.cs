@@ -16,7 +16,7 @@ double basedeliverycost = double.Parse(parts[0]);
 int numberofpackage = int.Parse(parts[1]);
 
 var offerService = new OfferService(coupons);
-var costCalculationService = new CostCalculationService();
+var costCalculationService = new CostCalculationService(offerService);
 List<Result> costEstimationResult = new List<Result>();
 
 for (int i = 0; i < numberofpackage; i++)
@@ -26,7 +26,7 @@ for (int i = 0; i < numberofpackage; i++)
    
     double deliverycost = costCalculationService.CalculateDeliveryCost(package,basedeliverycost) ;
     Console.WriteLine($"Delivery cost for package {package.PackageId}: {deliverycost}");
-    double discount = costCalculationService.CalculateDiscount(deliverycost,package,offerService);
+    double discount = costCalculationService.CalculateDiscount(deliverycost,package);
     Console.WriteLine($"Discount for package {package.PackageId}: {discount}");
     double totalcost = deliverycost - discount;
 

@@ -12,8 +12,16 @@ namespace CourierService.Tests
     {
         private readonly ICostCalculationService _costCalculationService;
         public CostCalculationServiceTests()
-        { 
-            _costCalculationService = new CostCalculationService();
+        {
+            var coupons = new List<Coupons>
+            {
+                new Coupons { OfferCode = "OFR001", Discount = 10, MinWeight = 70, MaxWeight = 200, MinDistance = 0, MaxDistance = 199 },
+                new Coupons { OfferCode = "OFR002", Discount = 7, MinWeight = 100, MaxWeight = 250, MinDistance = 50, MaxDistance = 150 },
+                new Coupons { OfferCode = "OFR003", Discount = 5, MinWeight = 10, MaxWeight = 150, MinDistance = 50, MaxDistance = 250 }
+            };
+            var offerService = new OfferService(coupons);
+            _costCalculationService = new CostCalculationService(offerService);
+        
         }
 
         [Fact]
@@ -40,17 +48,11 @@ namespace CourierService.Tests
 
         [Fact]
         public void CalculateDiscount_ValidOffer_ReturnsDiscount()
-        {            
-            var coupons = new List<Coupons>
-            {
-                new Coupons { OfferCode = "OFR003", Discount = 5, MinWeight = 10, MaxWeight = 150, MinDistance = 50, MaxDistance = 250 }
-            };
-            var offerService = new OfferService(coupons);
-            // OFR003: 5% discount, distance 50-250, weight 10-150
+        {     
             var package = new Package { PackageId = "PKG3", Weight = 10, Distance = 100, OfferCode = "OFR003" };
             double deliveryCost = 700;
 
-            double discount = _costCalculationService.CalculateDiscount(deliveryCost, package, offerService);
+            double discount = _costCalculationService.CalculateDiscount(deliveryCost, package);
 
             // 5% of 700 = 35
             Assert.Equal(35, discount);
@@ -61,14 +63,10 @@ namespace CourierService.Tests
         [InlineData("INVALID", 55, 55, 175)]
         public void CalculateDiscount_ReturnsZero(string offerCode, double weight, double distance, double deliveryCost)
         {
-            var coupons = new List<Coupons>
-            {
-                new Coupons { OfferCode = "OFR003", Discount = 5, MinWeight = 10, MaxWeight = 150, MinDistance = 50, MaxDistance = 250 }
-            };
-            var offerService = new OfferService(coupons);
+            
             var package = new Package { PackageId = "PKG1", Weight = weight, Distance = distance, OfferCode = offerCode };
 
-            double discount = _costCalculationService.CalculateDiscount(deliveryCost, package, offerService);
+            double discount = _costCalculationService.CalculateDiscount(deliveryCost, package);
 
             Assert.Equal(0, discount);
         }

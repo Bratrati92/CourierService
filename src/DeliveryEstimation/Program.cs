@@ -17,10 +17,8 @@ var parts = line.Split(' ');
 double baseDeliveryCost = double.Parse(parts[0]);
 int numberOfPackages = int.Parse(parts[1]);
 
-
-
-var costCalculator = new CostCalculationService();
 var offerService = new OfferService(coupons);
+var costCalculator = new CostCalculationService(offerService);
 var packages = new List<Package>();
 var deliveryEstimationResults = new List<DeliveryEstimationResult>();
 
@@ -33,7 +31,7 @@ for (int i = 0; i < numberOfPackages; i++)
     packages.Add(package);
 
     double deliveryCost = costCalculator.CalculateDeliveryCost(package, baseDeliveryCost);
-    double discount = costCalculator.CalculateDiscount(deliveryCost, package, offerService);
+    double discount = costCalculator.CalculateDiscount(deliveryCost, package);
     double totalCost = deliveryCost - discount;
 
     deliveryEstimationResults.Add(new DeliveryEstimationResult

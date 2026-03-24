@@ -9,14 +9,20 @@ namespace CourierService.Core.Service
 {
     public class CostCalculationService : ICostCalculationService
     {
+        private readonly IOfferService _offerService;
+
+        public CostCalculationService(IOfferService offerService)
+        {
+            _offerService = offerService;
+        }
         public double CalculateDeliveryCost(Package package, double baseCost)
         {
             return baseCost + (package.Weight * 10) + (package.Distance * 5);
         }
 
-        public double CalculateDiscount(double deliverycost, Package package, IOfferService offerService)
+        public double CalculateDiscount(double deliverycost, Package package)
         {
-            double discount = offerService.CalculateDiscountPercentage(package);
+            double discount = _offerService.CalculateDiscountPercentage(package);
             return (deliverycost * discount / 100);
         }
 

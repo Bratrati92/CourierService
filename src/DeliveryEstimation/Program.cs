@@ -1,8 +1,8 @@
 ﻿
 using CourierService.Core.Model;
 using CourierService.Core.Service;
-using DeliveryEstimation.Models;
-using DeliveryEstimation.Service;
+using CourierService.DeliveryEstimation.Models;
+using CourierService.DeliveryEstimation.Service;
 using Microsoft.Extensions.Configuration;
 
 var configuration = new ConfigurationBuilder()

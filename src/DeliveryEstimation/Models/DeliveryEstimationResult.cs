@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliveryEstimation.Models
+namespace CourierService.DeliveryEstimation.Models
 {
     public  class DeliveryEstimationResult : Result
     {

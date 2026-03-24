@@ -1,12 +1,12 @@
 ﻿using CourierService.Core.Model;
-using DeliveryEstimation.Models;
+using CourierService.DeliveryEstimation.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliveryEstimation.Service
+namespace CourierService.DeliveryEstimation.Service
 {
     public class DeliveryTimeCalculator : IDeliveryTimeCalculator
     {

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.14.36327.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierService.Core", "src\CourierService.Core\CourierService.Core.csproj", "{2BCFF7D8-6153-47F5-B9DA-4564A0F8448C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostEstimation", "src\CostCalculation\CostEstimation.csproj", "{603BEA72-5FFC-4010-80C9-EEB22DAFEFB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierService.CostEstimation", "src\CostCalculation\CourierService.CostEstimation.csproj", "{603BEA72-5FFC-4010-80C9-EEB22DAFEFB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliveryEstimation", "src\DeliveryEstimation\DeliveryEstimation.csproj", "{D87498FC-D07F-412C-A057-635E66BB459D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourierService.DeliveryEstimation", "src\DeliveryEstimation\CourierService.DeliveryEstimation.csproj", "{D87498FC-D07F-412C-A057-635E66BB459D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject

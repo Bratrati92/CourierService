@@ -1,6 +1,6 @@
 ﻿using CourierService.Core.Model;
-using DeliveryEstimation.Models;
-using DeliveryEstimation.Service;
+using CourierService.DeliveryEstimation.Models;
+using CourierService.DeliveryEstimation.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CostCalculation\CostEstimation.csproj" />
+    <ProjectReference Include="..\..\src\CostCalculation\CourierService.CostEstimation.csproj" />
     <ProjectReference Include="..\..\src\CourierService.Core\CourierService.Core.csproj" />
-    <ProjectReference Include="..\..\src\DeliveryEstimation\DeliveryEstimation.csproj" />
+    <ProjectReference Include="..\..\src\DeliveryEstimation\CourierService.DeliveryEstimation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

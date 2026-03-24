@@ -1,7 +1,7 @@
 ﻿using CourierService.Core.Model;
-using DeliveryEstimation.Models;
+using CourierService.DeliveryEstimation.Models;
 
-namespace DeliveryEstimation.Service
+namespace CourierService.DeliveryEstimation.Service
 {
     public interface IDeliveryTimeCalculator
     {

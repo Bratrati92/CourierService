@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourierService.Core.Model
 {
-    internal class Coupons
+    public class Coupons
     {
         public string OfferCode { get; set; }
         public double Discount { get; set; }

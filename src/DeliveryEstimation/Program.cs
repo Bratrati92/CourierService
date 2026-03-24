@@ -3,6 +3,14 @@ using CourierService.Core.Model;
 using CourierService.Core.Service;
 using DeliveryEstimation.Models;
 using DeliveryEstimation.Service;
+using Microsoft.Extensions.Configuration;
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(AppContext.BaseDirectory)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+    .Build();
+
+var coupons = configuration.GetSection("Coupons").Get<List<Coupons>>();
 
 var line = Console.ReadLine();
 var parts = line.Split(' ');
@@ -12,7 +20,7 @@ int numberOfPackages = int.Parse(parts[1]);
 
 
 var costCalculator = new CostCalculationService();
-var offerService = new OfferService();
+var offerService = new OfferService(coupons);
 var packages = new List<Package>();
 var deliveryEstimationResults = new List<DeliveryEstimationResult>();
 
